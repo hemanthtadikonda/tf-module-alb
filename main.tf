@@ -29,5 +29,5 @@ resource "aws_lb" "alb" {
   load_balancer_type = var.lb_type
   security_groups    = aws_security_group.sg.id
   subnets            = var.subnets
-  tags               = merge ( var.tags , { Name= local.lb_name }
+  tags               = merge ( var.tags , { Name= local.lb_name } )
 }
