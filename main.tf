@@ -24,7 +24,7 @@ resource "aws_security_group" "sg" {
 
 
 resource "aws_lb" "alb" {
-  name               = "${var.env}-alb"
+  name               = local.lb_name
   internal           = var.internal
   load_balancer_type = var.lb_type
   security_groups    = [aws_security_group.sg.id]
