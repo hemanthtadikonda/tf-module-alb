@@ -1,5 +1,5 @@
 
-resource "aws_security_group" "sg" {
+resource "aws_security_group" "main" {
   name        = local.sg_name
   description = local.sg_name
   vpc_id      = var.vpc_id
@@ -23,11 +23,11 @@ resource "aws_security_group" "sg" {
 }
 
 
-resource "aws_lb" "alb" {
+resource "aws_lb" "main" {
   name               = local.lb_name
   internal           = var.internal
   load_balancer_type = var.lb_type
-  security_groups    = [aws_security_group.sg.id]
+  security_groups    = [aws_security_group.main.id]
   subnets            = var.subnets
   tags               = merge ( var.tags , { Name= local.lb_name } )
 }
