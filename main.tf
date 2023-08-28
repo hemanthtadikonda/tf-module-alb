@@ -1,4 +1,3 @@
-
 resource "aws_security_group" "main" {
   name        = local.sg_name
   description = local.sg_name
@@ -12,7 +11,6 @@ resource "aws_security_group" "main" {
     protocol         = "tcp"
     cidr_blocks      = var.sg_cidr_blocks
   }
-
   egress {
     from_port        = 0
     to_port          = 0
@@ -21,8 +19,6 @@ resource "aws_security_group" "main" {
     ipv6_cidr_blocks = ["::/0"]
   }
 }
-
-
 resource "aws_lb" "main" {
   name               = local.lb_name
   internal           = var.internal
@@ -30,4 +26,20 @@ resource "aws_lb" "main" {
   security_groups    = [aws_security_group.main.id]
   subnets            = var.subnets
   tags               = merge ( var.tags , { Name= local.lb_name } )
+}
+
+resource "aws_lb_listener" "main" {
+  load_balancer_arn = aws_lb.main.arn
+  port              = "80"
+  protocol          = "HTTP"
+
+  default_action {
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "ERROR"
+      status_code  = "404"
+    }
+  }
 }
